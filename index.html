@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FoodieFast - Food Delivery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --primary: #ff4b2b;
+      --primary-dark: #e63f21;
+      --accent: #ffb347;
+      --bg: #fff9f5;
+      --text: #222;
+      --muted: #666;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Header / Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 249, 245, 0.9);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .logo span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 0.1rem;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: var(--shadow-soft);
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 0.45rem 0.9rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    /* Mobile menu button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 2.5rem 0 1.5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hero-meta span strong {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .hero-image-card {
+      background: linear-gradient(135deg, #ffe0d1, #ffe9b3);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-image-card-inner {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero-image-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-image-card ul {
+      list-style: none;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hero-image-card ul li {
+      margin-bottom: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .hero-tag-float {
+      position: absolute;
+      right: 0.9rem;
+      top: 0.6rem;
+      background: #fff3cd;
+      border-radius: 999px;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Sections */
+    section {
+      padding: 1.5rem 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.4rem;
+    }
+
+    .section-header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Category pills */
+    .category-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .category-pill {
+      padding: 0.3rem 0.9rem;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .category-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Cards grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-img {
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Simple placeholder gradient “images” */
+    .img-burger {
+      background-image: linear-gradient(135deg, #ff9a9e, #fecfef);
+    }
+
+    .img-pizza {
+      background-image: linear-gradient(135deg, #f6d365, #fda085);
+    }
+
+    .img-biryani {
+      background-image: linear-gradient(135deg, #84fab0, #8fd3f4);
+    }
+
+    .img-dessert {
+      background-image: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    }
+
+    .img-noodles {
+      background-image: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    }
+
+    .img-salad {
+      background-image: linear-gradient(135deg, #d4fc79, #96e6a1);
+    }
+
+    .card-body {
+      padding: 0.85rem 0.9rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .card-price {
+      font-weight: 700;
+    }
+
+    .card-rating {
+      font-size: 0.78rem;
+      background: #fff5e6;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+    }
+
+    .card-footer {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .card-footer button {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.75rem;
+    }
+
+    /* How it works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .step {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 0.85rem 0.9rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.9rem;
+    }
+
+    .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.78rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Footer */
+    footer {
+      padding: 1.5rem 0 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      margin-top: 1.5rem;
+    }
+
+    footer .foot-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 850px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        position: absolute;
+        top: 56px;
+        right: 0;
+        left: 0;
+        background: rgba(255, 249, 245, 0.97);
+        flex-direction: column;
+        padding: 0.75rem 1.25rem 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: none;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .hero {
+        padding-top: 1.5rem;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <span>🍽️</span>
+        FoodieFast
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+        ☰
+      </button>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#hero">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#how">How it works</a>
+        <button class="btn-outline">Sign In</button>
+        <button class="btn-primary">
+          Order Now
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero" id="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="hero-badge">
+            🚀 Fast Delivery • Under 30 mins
+          </div>
+          <h1 class="hero-title">
+            Hungry? Get <span>hot food</span> delivered to your door.
+          </h1>
+          <p class="hero-subtitle">
+            Order from your favourite restaurants and local chefs in just a few clicks.
+            No calls, no waiting in line – just tasty food, fast.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="scrollToMenu()">
+              Browse Menu
+            </button>
+            <button class="btn-outline">
+              View Offers
+            </button>
+          </div>
+
+          <div class="hero-meta">
+            <span><strong>5000+</strong> Happy customers</span>
+            <span><strong>150+</strong> Restaurants</span>
+            <span><strong>4.7★</strong> Average rating</span>
+          </div>
+        </div>
+
+        <div class="hero-image-card">
+          <div class="hero-tag-float">
+            Free delivery above ₹199
+          </div>
+          <div class="hero-image-card-inner">
+            <h3>Popular near you</h3>
+            <ul>
+              <li>
+                <span>Cheese Burst Pizza</span>
+                <span>₹249</span>
+              </li>
+              <li>
+                <span>Paneer Tikka Burger</span>
+                <span>₹149</span>
+              </li>
+              <li>
+                <span>Veg Biryani Combo</span>
+                <span>₹199</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>Explore the menu</h2>
+            <p>Choose from popular dishes. Click "Add to Cart" to simulate an order.</p>
+          </div>
+        </div>
+
+        <div class="category-list">
+          <button class="category-pill active" onclick="filterCategory('all', this)">
+            All
+          </button>
+          <button class="category-pill" onclick="filterCategory('fast', this)">
+            Fast Food
+          </button>
+          <button class="category-pill" onclick="filterCategory('indian', this)">
+            Indian
+          </button>
+          <button class="category-pill" onclick="filterCategory('healthy', this)">
+            Healthy
+          </button>
+          <button class="category-pill" onclick="filterCategory('dessert', this)">
+            Dessert
+          </button>
+        </div>
+
+        <div class="grid" id="menuGrid">
+          <!-- Card 1 -->
+          <article class="card" data-category="fast">
+            <div class="card-img img-burger"></div>
+            <div class="card-body">
+              <div class="card-title">Classic Veg Burger</div>
+              <div class="card-desc">
+                Soft bun, crispy patty, fresh veggies and secret sauce.
+              </div>
+              <div class="card-meta">
+                <span class="card-price">₹129</span>
+                <span class="card-rating">4.5★ • 20-25 min</span>
+              </div>
+              <div class="card-footer">
+                <span>Foodie Grill</span>
+                <button class="btn-primary" onclick="addToCart('Classic Veg Burger')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card" data-category="fast">
+            <div class="card-img img-pizza"></div>
+            <div class="card-body">
+              <div class="card-title">Cheese Burst Pizza</div>
+              <div class="card-desc">
+                Loaded with cheese, olives, capsicum, and jalapeños.
+              </div>
+              <div class="card-meta">
+                <span class="card-price">₹249</span>
+                <span class="card-rating">4.7★ • 25-30 min</span>
+              </div>
+              <div class="card-footer">
+                <span>Urban Pizza Co.</span>
+                <button class="btn-primary" onclick="addToCart('Cheese Burst Pizza')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card" data-category="indian">
+            <div class="card-img img-biryani"></div>
+            <div class="card-body">
+              <div class="card-title">Veg Biryani Combo</div>
+              <div class="card-desc">
+                Aromatic basmati rice with raita and salad on the side.
+              </div>
+              <div class="card-meta">
+                <span class="card-price">₹199</span>
+                <span class="card-rating">4.6★ • 20-25 min</span>
+              </div>
+              <div class="card-footer">
+                <span>Spice Route</span>
+                <button class="btn-primary" onclick="addToCart('Veg Biryani Combo')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="card" data-category="dessert">
+            <div class="card-img img-dessert"></div>
+            <div class="card-body">
+              <div class="card-title">Choco Lava Cake</div>
+              <div class="card-desc">
+                Warm chocolate cake with a gooey molten center.
+              </div>
+              <div class="card-meta">
+                <span class="card-price">₹99</span>
+                <span class="card-rating">4.8★ • 15-20 min</span>
+              </div>
+              <div class="card-footer">
+                <span>Sweet Cravings</span>
+                <button class="btn-primary" onclick="addToCart('Choco Lava Cake')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="card" data-category="fast">
+            <div class="card-img img-noodles"></div>
+            <div class="card-body">
+              <div class="card-title">Veg Hakka Noodles</div>
+              <div class="card-desc">
+                Street-style noodles with crunchy veggies & soy sauce.
+              </div>
+              <div class="card-meta">
+                <span class="card-price">₹159</span>
+                <span class="card-rating">4.4★ • 20-25 min</span>
+              </div>
+              <div class="card-footer">
+                <span>Wok & Roll</span>
+                <button class="btn-primary" onclick="addToCart('Veg Hakka Noodles')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="card" data-category="healthy">
+            <div class="card-img img-salad"></div>
+            <div class="card-body">
+              <div class="card-title">Rainbow Salad Bowl</div>
+              <div class="card-desc">
+                Fresh greens, veggies, seeds and light lemon dressing.
+              </div>
+              <div class="card-meta">
+                <span class="card-price">₹149</span>
+                <span class="card-rating">4.3★ • 15-20 min</span>
+              </div>
+              <div class="card-footer">
+                <span>Fit & Fresh</span>
+                <button class="btn-primary" onclick="addToCart('Rainbow Salad Bowl')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>How it works</h2>
+            <p>Three simple steps from craving to delivery.</p>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Choose your favourites</h3>
+            <p>
+              Browse restaurants near you and pick dishes you love. Filter by
+              cuisine, price, and rating.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Place your order</h3>
+            <p>
+              Add items to your cart, apply coupons, and pay securely using
+              UPI, card, or cash on delivery.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Track & enjoy</h3>
+            <p>
+              Track your rider in real-time and receive hot, fresh food right at
+              your doorstep.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container foot-flex">
+      <span>© 2025 FoodieFast. All rights reserved.</span>
+      <span>Built with ♥ using simple HTML, CSS & JS.</span>
+    </div>
+  </footer>
+
+  <!-- Minimal JavaScript -->
+  <script>
+    // Mobile nav toggle
+    function toggleMenu() {
+      const nav = document.getElementById("navLinks");
+      nav.classList.toggle("show");
+    }
+
+    // Scroll to menu section
+    function scrollToMenu() {
+      document.getElementById("menu").scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Simple "Add to Cart" demo
+    function addToCart(itemName) {
+      alert(itemName + " added to cart (demo only).");
+    }
+
+    // Filter menu by category (very simple)
+    function filterCategory(category, button) {
+      const cards = document.querySelectorAll("#menuGrid .card");
+      cards.forEach(card => {
+        const cardCat = card.getAttribute("data-category");
+        if (category === "all" || cardCat === category) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      // Update active pill
+      const allPills = document.querySelectorAll(".category-pill");
+      allPills.forEach(pill => pill.classList.remove("active"));
+      button.classList.add("active");
+    }
+  </script>
+</body>
+</html>
